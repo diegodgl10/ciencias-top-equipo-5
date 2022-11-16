@@ -17,6 +17,9 @@ import { EditarPumaPuntosComponent } from './editar-puma-puntos/editar-puma-punt
 import { AgregarUsrComponent } from './agregar-usr/agregar-usr.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RentaUsrComponent } from './renta-usr/renta-usr.component';
+import { RentaAdminComponent } from './renta-admin/renta-admin.component';
+
 
 
 const routes: Routes = [
@@ -24,6 +27,9 @@ const routes: Routes = [
   {path: "usuarios", component: UsuariosComponent},
   {path: "productos", component: ProductosComponent},
   {path: "usuarios/agregar-usr", component: AgregarUsrComponent},
+  {path: "renta-usr", component: RentaUsrComponent},
+  {path: "renta-admin", component: RentaAdminComponent}
+
 ]
 
 @NgModule({
@@ -38,7 +44,10 @@ const routes: Routes = [
     SortDirective,
     EditarUsrComponent,
     EditarPumaPuntosComponent,
-    AgregarUsrComponent
+    AgregarUsrComponent,
+    RentaUsrComponent,
+    RentaAdminComponent,
+
   ],
   imports: [
     BrowserModule,

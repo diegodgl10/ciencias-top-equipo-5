@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fciencias.cienciastop.models.entity.Producto;
 import com.fciencias.cienciastop.models.entity.Renta;
+import com.fciencias.cienciastop.models.entity.Usuario;
 import com.fciencias.cienciastop.models.service.IProductoService;
 import com.fciencias.cienciastop.models.service.IRentaService;
 
@@ -33,9 +34,30 @@ public class RentaRestController {
 	@Autowired
 	private IProductoService productoService;
 	
-	@GetMapping("/rentas")
+	/*@GetMapping("/rentas")
 	public List<Renta> index() {
 		return rentaService.findAll();
+	}*/
+	
+	@GetMapping("/rentas")
+	public ResponseEntity<?> verRentas() {
+		List<Renta> rentasPorDevolver = null;
+		Map<String,Object> response = new HashMap<String, Object>();
+		try {
+			rentasPorDevolver  = this.rentaService.verRentas();
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la conexión con la base de datos.");
+			String cadenaError = "";
+			cadenaError += e.getMessage() + ": ";
+			cadenaError += e.getMostSpecificCause().getMessage();
+			response.put("error", cadenaError);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		if (rentasPorDevolver  == null || rentasPorDevolver .isEmpty()) {
+			response.put("mensaje", "No se encontraron rentas sin devolver");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<Renta>>(rentasPorDevolver ,HttpStatus.OK); 
 	}
 	
 	/**
