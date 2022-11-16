@@ -17,6 +17,7 @@ import { EditarPumaPuntosComponent } from './editar-puma-puntos/editar-puma-punt
 import { AgregarUsrComponent } from './agregar-usr/agregar-usr.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { EditarProdComponent } from './editar-prod/editar-prod.component';
 
 
 const routes: Routes = [
@@ -38,7 +39,8 @@ const routes: Routes = [
     SortDirective,
     EditarUsrComponent,
     EditarPumaPuntosComponent,
-    AgregarUsrComponent
+    AgregarUsrComponent,
+    EditarProdComponent
   ],
   imports: [
     BrowserModule,
