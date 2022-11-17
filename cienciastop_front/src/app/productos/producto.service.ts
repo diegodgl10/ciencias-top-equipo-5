@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Producto } from './producto';
 import { PRODUCTOS } from './productos.json';
 import { Observable } from 'rxjs';
+import { catchError , throwError} from 'rxjs'; // Para manejar las excepciones del back
 import { of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +33,16 @@ export class ProductoService {
 
   delete(codigo: string): Observable<Producto>{
     console.log("adios");
-    return this.http.delete<Producto>(`${this.urlEndPoint}/${codigo}/${localStorage.getItem("noCT")}`, {headers: this.httpHeaders})
+    return this.http.delete<Producto>(`${this.urlEndPoint}/${codigo}/`, {headers: this.httpHeaders})
+  }
+
+  editarProducto(producto: Producto, noCT: number) { // {headers: this.httpHeaders}
+    localStorage.getItem("noCT");
+    return this.http.put<any>(this.urlEndPoint + producto.codigo + "/editar/"+ `${localStorage.getItem("noCT")}`).pipe(
+      catchError(e => {
+        Swal.fire(e.error.mensaje, e.error.error, 'error');
+        return throwError( () => e);
+      })
+    )
   }
 }
