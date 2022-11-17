@@ -186,8 +186,8 @@ public class ProductoRestController {
 	 * @param Producto producto - representado en un Json
 	 * @param codigo identificador del producto que queremos editar
 	 */
-	@PutMapping("/productos/{codigo}/editar")
-	public ResponseEntity<?> editarProducto (@Valid @RequestBody Producto producto,  BindingResult bindingResult, @PathVariable String codigo) {//long noCT
+	@PutMapping("/productos/{codigo}/editar/{noCT}")
+	public ResponseEntity<?> editarProducto (@Valid @RequestBody Producto producto,  BindingResult bindingResult, @PathVariable String codigo, @PathVariable long noCT) {//noCT del que quiere editar el prod
 		// Verificamos que no tengamos errores en el JSON de acuerdo a nuestra Identidad
 		if(bindingResult.hasErrors()) {
 			Map<String,Object> response = new HashMap<>();
@@ -210,6 +210,11 @@ public class ProductoRestController {
 			response.put("mensaje", "No se puede editar este producto");
 			response.put("error", "porque no existe un producto con el código:".concat(codigo.concat(" en nuestra base de datos."))	);
 			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		if (currentProd.getnoCT()!=noCT) { // falta verificar el rol 
+			response.put("mensaje", "Error al editar el producto"); 
+			response.put("error", "No se tiene los permisos necesarios para eliminar este producto."); 
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.UNAUTHORIZED);
 		}
 		try {
 			// actualizacion de los atributos
