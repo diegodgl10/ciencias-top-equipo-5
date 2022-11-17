@@ -23,6 +23,7 @@ import com.fciencias.cienciastop.models.entity.Renta;
 import com.fciencias.cienciastop.models.entity.Usuario;
 import com.fciencias.cienciastop.models.service.IProductoService;
 import com.fciencias.cienciastop.models.service.IRentaService;
+import com.fciencias.cienciastop.models.service.IUsuarioService;
 
 @CrossOrigin(origins= {"http://localhost:4200"})
 @RestController
@@ -33,6 +34,9 @@ public class RentaRestController {
 	
 	@Autowired
 	private IProductoService productoService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
 	
 	/*@GetMapping("/rentas")
 	public List<Renta> index() {
@@ -100,13 +104,14 @@ public class RentaRestController {
 	 * @param noCT identificacion del usuario que solicito la renta.
 	 * @return la renta nueva creada
 	 */
-	@PostMapping("/rentas/{codigo}")
-	public ResponseEntity<?> rentarProducto(@PathVariable String codigo) {
+	@PostMapping("/rentas/{codigo}/{noCT}")
+	public ResponseEntity<?> rentarProducto(@PathVariable String codigo, @PathVariable Long noCT ) {
 		Map<String, Object> response = new HashMap<>();
 		String mensaje;
 		Producto producto = new Producto();
+		Usuario usuario = new Usuario();
 		producto = this.productoService.findByCodigo(codigo);
-		
+		usuario = this.usuarioService.buscarUsuarioPorNoCT(noCT);
 		Renta rentaNueva = new Renta();
 		try {
 			rentaNueva= rentaService.save(rentaNueva);
@@ -125,7 +130,7 @@ public class RentaRestController {
 		fecha.add(Calendar.DATE, producto.getPeriodoRenta());
 		rentaNueva.setFecha_entrega(fecha.getTime());
 		rentaNueva.setProducto(producto);
-		rentaNueva.setUsuario(null);
+		rentaNueva.setUsuario(usuario);
 		rentaNueva.setStatus_entrega(false);
 		int stock = producto.getCurrentStock();
 		if(stock<=0) {

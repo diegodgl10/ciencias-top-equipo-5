@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Renta } from './renta';
 import { catchError } from 'rxjs';
-import Swal from 'sweetalert2';
+import swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -21,10 +21,10 @@ export class RentaService {
     return this.http.get<Renta[]>(this.urlEndPoint);
   }
   update(id: number): Observable<Renta>{
-    return this.http.put<Renta>( `${this.urlEndPoint}/${id}`, {headers: this.httpHeaders}).pipe(
+    return this.http.put<Renta>( this.urlEndPoint+ '/' + id, {headers: this.httpHeaders}).pipe(
       catchError(e =>{
         this.router.navigate(['/renta-admin'])
-        Swal.fire('Error al actualizar producto', e.error.mensaje, "error");
+        swal.fire('Error al actualizar producto', e.error.mensaje, "error");
         return throwError( () => e);
         
       })

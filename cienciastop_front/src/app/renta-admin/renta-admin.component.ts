@@ -24,8 +24,8 @@ export class RentaAdminComponent implements OnInit {
   public update(renta: Renta):void{
     this.rentaService.update(renta.id).subscribe(renta => 
       {
-      this.router.navigate(['/renta-admin'])
-      swal.fire('Renta Actualizado', `${renta.id} actualizado con éxito`, 'success')
+      this.router.navigate(['/renta-admin']);
+      swal.fire('Renta Actualizado', `${renta.id} actualizado con éxito`, 'success');
       }
     )
   }

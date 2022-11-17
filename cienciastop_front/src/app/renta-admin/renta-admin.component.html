@@ -19,10 +19,9 @@
                 <td>{{ renta.status_entrega }}</td>
                 <td>
                     <a href="">
-                        <button type="button" (click)="update(renta)" class="ver-rentas-editar-rentas button">
-                            <img class="ver-rentas-pencil" alt="pencil" src="/assets/playground_assets/pencil.svg" />
-                            <span class="ver-rentas-editar-status">Cambiar Status</span>
-                        </button>  
+                        <div class="botonRentar">
+                            <button (click)="update(renta)" class="boton">Editar</button>
+                        </div> 
                     </a>
 
                 </td>
