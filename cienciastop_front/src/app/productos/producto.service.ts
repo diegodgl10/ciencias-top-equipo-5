@@ -37,8 +37,10 @@ export class ProductoService {
   }
 
   editarProducto(producto: Producto, noCT: number) { // {headers: this.httpHeaders}
+    console.log("mmmm");
+    //return this.http.put<any>(this.urlEndPoint + producto.codigo + "/editar/"+ `${localStorage.getItem("noCT")}`)
     localStorage.getItem("noCT");
-    return this.http.put<any>(this.urlEndPoint + producto.codigo + "/editar/"+ `${localStorage.getItem("noCT")}`).pipe(
+    return this.http.post<any>(`${this.urlEndPoint}/${producto.codigo}/editar/${localStorage.getItem("noCT")}`, producto ).pipe(
       catchError(e => {
         Swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError( () => e);
