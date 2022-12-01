@@ -1,18 +1,15 @@
-verProducto {
+.rentarProducto {
     position: absolute;
-    width: 1440px;
-    height: 1024px;
-    left: 0px;
-    top: 0px;
-    background: #FFFFFF;
+    width: 80%;
+    left: 20%;
 }
 
 .nombreProducto {
     position: absolute;
     width: 959px;
     height: 62px;
-    left: 416px;
-    top: 162px;
+    left: 62px;
+    top: 40px;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
@@ -24,18 +21,20 @@ verProducto {
 .imagenProducto {
     position: absolute;
     width: 300px;
-    height: 400px;
-    left: 420px;
-    top: 226px;
+    height: 300px;
+    left: 62px;
+    top: 104px;
+    object-fit: fill;
 }
 
 .tabla{
     position: absolute;
     width: 500px;
     height: 400px;
-    left: 750px;
-    top: 340px;
+    left: 400px;
+    top: 200px;
 }
+
 table {
     width: 150%;
     border: 1px solid #000;

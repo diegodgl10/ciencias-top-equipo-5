@@ -17,6 +17,12 @@ export class RentasUsrComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  
+  rentado() {
+    if (this.renta.status_entrega) {
+      return 'Entregado';
+    }
+
+    return 'Sin entregar';
+  }
 
 }
