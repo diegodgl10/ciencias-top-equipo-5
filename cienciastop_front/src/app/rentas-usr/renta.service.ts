@@ -18,8 +18,8 @@ export class RentaService {
 
   private urlEndPoint:string = 'http://localhost:8080/api/rentas';
 
-  rentarProducto(codigo: String, noCT: number): Observable<Object>{
-    return this.http.post<Renta>(this.urlEndPoint + '/' + codigo + '/' + noCT, {headers: this.httpHeaders}).pipe(
+  rentarProducto(codigo: String, noCT: number): Observable<RentaJSON>{
+    return this.http.post<RentaJSON>(this.urlEndPoint + '/' + codigo + '/' + noCT, {headers: this.httpHeaders}).pipe(
       catchError( e => {
         swal.fire('Error al rentar el producto', e.error.mensaje, 'error');
         return throwError( () => e);
@@ -28,4 +28,13 @@ export class RentaService {
     );
   }
 
+  verRenta(id: number): Observable<Renta>{
+    return this.http.get<Renta>(this.urlEndPoint + '/' + id);
+  }
+
+}
+
+export class RentaJSON{
+  mensaje: string;
+  renta: Renta;
 }
