@@ -18,6 +18,8 @@ export class ProductosComponent implements OnInit {
 
   producto3: any;
 
+  producto4: any;
+
   constructor(private productoService: ProductoService) { }
   ngOnInit(): void {
     this.productoService.getProductos().subscribe(
@@ -26,6 +28,7 @@ export class ProductosComponent implements OnInit {
         this.producto1 = productos[0]
         this.producto2 = productos[1]
         this.producto3 = productos[2]
+        this.producto4 = productos[3]
       }
     );
   }

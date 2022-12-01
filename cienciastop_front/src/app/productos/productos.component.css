@@ -1,11 +1,121 @@
+.bienvenida {
+    height: 200px;
+    width: 70%;
+    left: 20%;
+    position: absolute;
+}
+
+.bienvenida1 {
+    top: 60px;
+    left: 60px;
+    position: absolute;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 38px;
+    color: black;
+}
+
+.bienvenida2 {
+    top: 110px;
+    left: 60px;
+    position: relative;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 38px;
+    color: black;
+}
+
 .container {
     width: 80%;
     left: 20%;
-    top:10%;
+    top: 320px;
+    bottom: 0px;
     position: absolute;
-    display: flex;
-    overflow: auto;
-    min-height: 100vh;
-    align-items: flex-end;
-    flex-direction: column;
+}
+
+.recomendaciones {
+    top: 280px;
+    left: 360px;
+    position: absolute;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 38px;
+    color: black;
+}
+
+.prod1 {
+    top: 60px;
+    left: 70px;
+    width: 220px;
+    height: 260px;
+    position: absolute;
+}
+
+.prod2 {
+    top: 60px;
+    left: 340px;
+    width: 220px;
+    height: 260px;
+    position: absolute;
+}
+
+.prod3 {
+    top: 60px;
+    left: 610px;
+    width: 220px;
+    height: 260px;
+    position: absolute;
+}
+
+.prod4 {
+    top: 60px;
+    left: 880px;
+    width: 220px;
+    height: 260px;
+    position: absolute;
+}
+
+.targeta {
+    width: 100%;
+    height: 100%;
+    border-color: #e9c874;
+    background-color: #e9c874;
+}
+
+.imagen {
+    top: 0px;
+    left: 00px;
+    width: 220px;
+    height: 200px;
+    position: absolute;
+    object-fit: fill;
+}
+
+.nombre {
+    width: 100%;
+    top: 196px;
+    left: 16px;
+    position: absolute;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 38px;
+    text-align: left;
+    color: black;
+}
+
+.precio {
+    width: 100%;
+    top: 220px;
+    left: 16px;
+    position: absolute;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 38px;
+    text-align: left;
+    color: black;
 }
