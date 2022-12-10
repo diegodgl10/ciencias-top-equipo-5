@@ -119,6 +119,7 @@
                 </div>
             </div> /> -->
 
+            <!-- 
             <div class="form-group row">
                 <label for="" class="col-form-label col-sm-2">Imagen</label>
                 <div class="col-sm-6">
@@ -129,7 +130,23 @@
                 <div *ngIf="angForm.controls['imagen'].errors">
                     Debe ingresar la imagen del producto.
                 </div>
+            </div> -->
+
+            
+            <div class="form-group row">
+                <label for="imagen">Imagen<span class="text-danger">*</span></label>
+                    <div class="custom-file">
+                        <input type="file" accept="image/*" class="custom-file-input" (change)=convertFile($event,angForm)>
+                        <label class="custom-file-label" for="customFile">Selecciona una fotografia.</label>
+                    </div>
             </div>
+            <div *ngIf="angForm.controls['imagen'].invalid && (angForm.controls['imagen'].dirty || angForm.controls['imagen'].touched)" class="alert alert-danger">
+                <div *ngIf="angForm.controls['imagen'].errors">
+                    Debe ingresar la imagen del producto.
+                </div>
+            </div> 
+
+            
             
             <button type= "submit"
             [disabled]="angForm.invalid" class="btn btn-success">Editar</button>

@@ -44,6 +44,7 @@ export class EditarProdComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarProducto()
+    console.log(this.producto);
   }
   
   /**
@@ -61,7 +62,7 @@ export class EditarProdComponent implements OnInit {
       tipo: new FormControl('', [Validators.required] ),
       categoria: new FormControl('', [Validators.required] ),
       periodoRenta: new FormControl('', [Validators.required] ),
-      imagen: new FormControl('', [Validators.required]),
+      imagen: [''],
       //noCT: new FormControl('', [Validators.required])
     });
   }
@@ -72,6 +73,12 @@ export class EditarProdComponent implements OnInit {
    * Se encarga de disparar el método de editar el producto
    */
   onSubmitForm():void {
+
+    if(this.angForm.invalid){
+      console.log('Formulario inválido');
+      return;
+    }
+
     if (this.angForm.valid) {
       this.commitProd();
     } else {
@@ -100,5 +107,17 @@ export class EditarProdComponent implements OnInit {
       },
       error => console.log(error));
   }
+
+  convertFile(event, formulario){
+    let reader = new FileReader();
+    reader.readAsDataURL(<File> event.target.files[0]);
+    reader.onload = function(){
+      formulario.controls['imagen'].setValue(reader.result);
+    }
+    reader.onerror = function(error){
+      console.log(error);
+    }
+  }
+
 
 }
