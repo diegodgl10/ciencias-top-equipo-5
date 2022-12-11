@@ -47,6 +47,7 @@ public class RentaRestController {
 	}*/
 	
 	@GetMapping("/rentas")
+	@PreAuthorize("hasRole('Administrador')")
 	public ResponseEntity<?> verRentas() {
 		List<Renta> rentasPorDevolver = null;
 		Map<String,Object> response = new HashMap<String, Object>();
