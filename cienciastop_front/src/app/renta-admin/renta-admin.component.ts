@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Renta } from './renta';
 import { RentaService } from './renta.service';
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -21,11 +21,12 @@ export class RentaAdminComponent implements OnInit {
       rentas => this.rentas = rentas
     );
   }
-  public update(renta: Renta):void{
-    this.rentaService.update(renta.id).subscribe(renta => 
+  public update(renta1: Renta):void{
+    console.log(renta1);
+    this.rentaService.update(renta1.id).subscribe(renta => 
       {
         console.log(renta);
-        swal.fire({
+        Swal.fire({
           position: 'top-end',
           icon: 'success',
           title: 'Se ha editado el usuario correctamente',

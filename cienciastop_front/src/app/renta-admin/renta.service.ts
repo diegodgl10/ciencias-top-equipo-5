@@ -29,11 +29,11 @@ export class RentaService {
   getRentas(): Observable<Renta[]> {
     return this.http.get<Renta[]>(this.urlEndPoint, this.authHeader);
   }
-  update(id: number): Observable<Renta>{
-    return this.http.put<Renta>( this.urlEndPoint+ '/' + id, {headers: this.httpHeaders}).pipe(
+  update(id: number){
+    return this.http.put<any>( this.urlEndPoint+ '/' + id,null ,{headers: this.httpHeaders}).pipe(
       catchError(e =>{
         this.router.navigate(['/renta-admin'])
-        swal.fire('Error al actualizar producto', e.error.mensaje, "error");
+        swal.fire('Error al actualizar renta', e.error.mensaje, "error");
         return throwError( () => e);
         
       })
