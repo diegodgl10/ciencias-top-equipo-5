@@ -109,6 +109,7 @@ public class RentaRestController {
 	 * @return la renta nueva creada
 	 */
 	@PostMapping("/rentas/{codigo}/{noCT}")
+	@PreAuthorize("hasRole('Administrador') || hasRole('Alumno') || hasRole('Proveedor')")
 	public ResponseEntity<?> rentarProducto(@PathVariable String codigo,@PathVariable Long noCT) {
 		Map<String, Object> response = new HashMap<>();
 		String mensaje;
