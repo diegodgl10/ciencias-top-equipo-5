@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fciencias.cienciastop.models.entity.Renta;
 import com.fciencias.cienciastop.models.entity.Usuario;
+import com.fciencias.cienciastop.models.service.IRentaService;
 import com.fciencias.cienciastop.models.service.IUsuarioService;
 
 @CrossOrigin(origins = { "http://localhost:4200" })
@@ -34,9 +40,17 @@ import com.fciencias.cienciastop.models.service.IUsuarioService;
 public class UsuarioRestController {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private IUsuarioService usuarioService;
+	@Autowired
+	private IRentaService rentaService;
+
+	//private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@GetMapping("/usuarios")
+	@PreAuthorize("hasRole('Administrador')")
 	public ResponseEntity<?> verUsuarios() {
 		List<Usuario> usuariosActivos = null;
 		Map<String,Object> response = new HashMap<String, Object>();
@@ -61,6 +75,7 @@ public class UsuarioRestController {
 	/**Buscar usuarios por nombre */
 
 	@RequestMapping("/usuarios/nombre/{nombre}")
+	@PreAuthorize("hasRole('Administrador')")
 	public ResponseEntity<?> buscarUsuarioNombre(@PathVariable(value="nombre") String nombre) {
 		System.out.println("Buscando usuarios...");
 		List<Usuario> usuarios;
@@ -93,6 +108,7 @@ public class UsuarioRestController {
 
 	/**Buscar usuarios por correo */
 	@GetMapping("/usuarios/correo/{correo}")
+	@PreAuthorize("hasRole('Administrador')")
 	public ResponseEntity<?> buscarUsuario(@PathVariable(value="correo") String correo){
         System.out.println("Buscando usuario con correo " + correo);
 		Usuario usuario= null;
@@ -118,6 +134,7 @@ public class UsuarioRestController {
 
 	/**Buscar usuarios por numero de cuenta */
 	@RequestMapping(value = "/usuarios/{noCT}", method = RequestMethod.GET)
+	@PreAuthorize("hasRole('Administrador')")
 	public ResponseEntity<?> buscarUsuario(@PathVariable("noCT") Long noCT) {
         System.out.println("Buscando usuario con numero de cuenta " + noCT);
 		Usuario usuario= null;
@@ -142,12 +159,15 @@ public class UsuarioRestController {
     }
 	
 	@PostMapping("/usuarios")
+	@PreAuthorize("hasRole('Administrador')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> agregarUsuario(@RequestBody Usuario usuario) {
 		Usuario usuarioNuevo = null;
 		Map<String,Object> response = new HashMap<>();
 		try {
-			usuarioNuevo = usuarioService.guardar(usuario);
+			Usuario usuarioAux = usuario;
+			usuarioAux.setContrasenya(passwordEncoder.encode(usuario.getContrasenya()));
+			usuarioNuevo = usuarioService.guardar(usuarioAux);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos.");
 			String aux = "" + e.getMessage() + ": ";
@@ -166,6 +186,7 @@ public class UsuarioRestController {
 	}
 
 	@PutMapping("/usuarios/{noCT}")
+	@PreAuthorize("hasRole('Administrador')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> editarUsuario(@RequestBody Usuario usuario, @PathVariable Long noCT) {
 		Usuario currentUsuario = usuarioService.buscarUsuarioPorNoCT(noCT);
@@ -193,6 +214,8 @@ public class UsuarioRestController {
 	}
 
     @DeleteMapping("/usuarios/{noCT}")
+	@PreAuthorize("hasRole('Administrador')")
+	//@PreAuthorize("hasRole('Administrador') || hasRole('Alumno')")
     public ResponseEntity<?> eliminarUsuario(@PathVariable Long noCT) {
         Map<String, Object> response = new HashMap<String, Object>();
         if(usuarioService.borrar(noCT) == 0) {
@@ -211,7 +234,8 @@ public class UsuarioRestController {
 	 * @return una lista de usuarios agrupados por su carrera.
 	 * Si existe un error en la base de datos se manda un mensaje de error.
 	 */
-	@GetMapping("/agrupado-carrera")
+	@GetMapping("/usuarios/agrupado-carrera")
+	@PreAuthorize("hasRole('Administrador')")
 	public ResponseEntity<?> agruparPorCarrera() {
 		List<Object[]> agrupamiento;
 		HttpStatus status;
@@ -243,7 +267,8 @@ public class UsuarioRestController {
 	 * @return la lista de usuarios agrupada por cuentas activas e inactivas.
 	 * Si existe un error en la base de datos se manda un mensaje de error.
 	 */
-	@GetMapping("/agrupado-status")
+	@GetMapping("/usuarios/agrupado-status")
+	@PreAuthorize("hasRole('Administrador')")
 	public ResponseEntity<?> agruparPorStatus() {
 		List<Object[]> agrupamiento;
 		HttpStatus status;
@@ -281,5 +306,112 @@ public class UsuarioRestController {
 
 		status = HttpStatus.OK;
 		return new ResponseEntity<List<Object[]>>(agrupamiento, status);
+	}
+
+
+	@PostMapping("/usuarios/restablecer-contrasenia/{noCTLong}/{contraseniaString}")
+    public ResponseEntity<?> restablecerContrasenia(@PathVariable Long noCTLong, @PathVariable String contraseniaString ) {
+        Usuario usuario;
+		String mensajeError="";
+		Map<String, Object> response = new HashMap<>();
+		try{
+			usuario = usuarioService.buscarUsuarioPorNoCT(noCTLong);
+		}catch(DataAccessException e){
+			mensajeError = "Falla en la consulta a la base de datos";
+			response.put("mensaje", mensajeError);
+			mensajeError = "";
+			mensajeError += e.getMessage() + ": ";
+			mensajeError += e.getMostSpecificCause().getMessage();
+			response.put("Error: ", mensajeError);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+        if (usuario == null) {
+            response.put("mensaje", "Error: no se puede restablecer contrasenia del usuario con noCT:".concat(noCTLong.toString().concat(" no existe en la base de datos.")));
+			return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+        }
+        String newPassword = passwordEncoder.encode(contraseniaString);
+        usuario.setContrasenya(newPassword);
+        usuarioService.guardar(usuario);
+		response.put("Contrasenia actualizada:", "exitosamente!!!!");
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+	
+	@GetMapping("usuarios/ver-perfil/{noCT}")
+	@PreAuthorize("hasRole('Administrador')")
+	public ResponseEntity<?> getPerfilAdmin(@PathVariable Long noCT) {
+		Usuario usuario = new Usuario();
+		List<Renta> historialDeUsr = new ArrayList<Renta>();
+		List<Renta> rentasDeUsr = new ArrayList<Renta>();		
+		Map<String,Object> response = new HashMap<String, Object>();		
+
+		try {		
+			usuario = this.usuarioService.buscarUsuarioPorNoCT(noCT);
+			if (usuario == null) {
+				response.put("mensaje", "Error: no se puede acceder al usuario con noCT:".concat(noCT.toString().concat(" no existe en la base de datos.")));
+				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+			}
+			response.put("dataUsuario",usuario);	
+			historialDeUsr  = this.rentaService.rentasVencidasUsr(usuario);
+			rentasDeUsr  = this.rentaService.rentasActualesUsr(usuario);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la conexión con la base de datos.");
+			String cadenaError = "";
+			cadenaError += e.getMessage() + ": ";
+			cadenaError += e.getMostSpecificCause().getMessage();
+			response.put("error", cadenaError);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}						
+		
+		if (historialDeUsr != null) {
+			response.put("rentasVencidas",historialDeUsr);
+		}
+		if (rentasDeUsr != null) {
+			response.put("rentasActuales", rentasDeUsr);
+		}
+		if (historialDeUsr.isEmpty() && rentasDeUsr.isEmpty()) {
+			response.put("mensaje", "No se encontro informacion de rentas del usuario.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.PARTIAL_CONTENT);
+		}		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("ver-perfil/{noCT}")
+	@PreAuthorize("@securityService.hasUser(#noCT)")	
+	public ResponseEntity<?> getPerfilUsr(@PathVariable Long noCT) {
+		Usuario usuario = new Usuario();
+		List<Renta> historialDeUsr = new ArrayList<Renta>();
+		List<Renta> rentasDeUsr = new ArrayList<Renta>();		
+		Map<String,Object> response = new HashMap<String, Object>();		
+
+		try {		
+			usuario = this.usuarioService.buscarUsuarioPorNoCT(noCT);
+			if (usuario == null) {
+				response.put("mensaje", "Error: no se puede acceder al usuario con noCT:".concat(noCT.toString().concat(" no existe en la base de datos.")));
+				return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+			}
+			response.put("dataUsuario",usuario);	
+			historialDeUsr  = this.rentaService.rentasVencidasUsr(usuario);
+			rentasDeUsr  = this.rentaService.rentasActualesUsr(usuario);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la conexión con la base de datos.");
+			String cadenaError = "";
+			cadenaError += e.getMessage() + ": ";
+			cadenaError += e.getMostSpecificCause().getMessage();
+			response.put("error", cadenaError);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}						
+		
+		if (historialDeUsr != null) {
+			response.put("rentasVencidas",historialDeUsr);
+		}
+		if (rentasDeUsr != null) {
+			response.put("rentasActuales", rentasDeUsr);
+		}
+		if (historialDeUsr.isEmpty() && rentasDeUsr.isEmpty()) {
+			response.put("mensaje", "No se encontro informacion de rentas del usuario.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.PARTIAL_CONTENT);
+		}		
+		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	}
 }

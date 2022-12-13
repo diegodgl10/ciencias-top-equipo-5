@@ -12,7 +12,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class RentasUsrComponent implements OnInit {
 
   renta: any;
-  constructor(private rentaService: RentaService, private rutaActiva: ActivatedRoute, private router: Router) { }
+  constructor(private rentaService: RentaService, 
+    private rutaActiva: ActivatedRoute, 
+    private router: Router) { }
 
   ngOnInit(): void {
     this.rentaService.verRenta(this.rutaActiva.snapshot.params['id']).subscribe(
@@ -24,8 +26,10 @@ export class RentasUsrComponent implements OnInit {
     if (this.renta.status_entrega) {
       return 'Entregado';
     }
-
     return 'Sin entregar';
   }
+
+
+  
 
 }

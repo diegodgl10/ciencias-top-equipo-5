@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UserAuthService } from '../util/user-auth.service';
+import { UsuarioService } from '../usuarios/usuario.service';
+import { Usuario } from '../usuarios/usuario';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -7,11 +11,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  noCT : number;
+  
+  constructor(public authService: UserAuthService, private usuarioService: UsuarioService, private router: Router) {
+  }
+  
+  
+  ngOnInit(): void {        
+    this.noCT = this.authService.getNoCta();    
+    console.log(this.noCT);
   }
 
-  public autor = "Monica Miranda";
+  logOut() {
+    this.authService.clear();
+    //this.router.navigate(['login'])
+    console.log(this.authService.getToken())
+  }
 
 }

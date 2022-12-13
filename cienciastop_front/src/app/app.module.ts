@@ -6,7 +6,6 @@ import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
 import { ProductosComponent } from './productos/productos.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
-import { NavegacionComponent } from './navegacion/navegacion.component';
 import { VerProductosComponent } from './ver-productos/ver-productos.component';
 import { RouterModule, Routes } from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
@@ -26,6 +25,11 @@ import { RentaAdminComponent } from './renta-admin/renta-admin.component';
 import { RentasUsrComponent } from './rentas-usr/rentas-usr.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { EditarProdComponent } from './editar-prod/editar-prod.component';
+import { HistorialComponent } from './historial/historial.component';
+import { InicioUiComponent } from './inicio-ui/inicio-ui.component';
+import { ReestablecerContraseniaComponent } from './reestablecer-contrasenia/reestablecer-contrasenia.component';
+import { PerfilComponent } from './perfil/perfil.component';
+import { PerfilAdminComponent } from './perfil/perfil-admin.component';
 
 const routes: Routes = [
   {path: "", redirectTo: "/productos", pathMatch: "full"},
@@ -42,15 +46,19 @@ const routes: Routes = [
   {path: 'rentas-usr/:id', component: RentasUsrComponent},
   {path: 'reportes', component: ReportesComponent},
   {path: 'productos/editar-prod', component: EditarProdComponent},
-  {path: 'productos/editar-prod/:codigo', component: EditarProdComponent}
+  {path: 'productos/editar-prod/:codigo', component: EditarProdComponent},
+  {path: 'productos/historial', component: HistorialComponent},
+  {path: 'login', component: InicioUiComponent},
+  {path: 'usuarios/reestablecer-contrasenia', component: ReestablecerContraseniaComponent},
+  {path: 'ver-perfil/:noCT', component: PerfilComponent},  
+  {path: 'usuarios/ver-perfil/:noCT', component: PerfilAdminComponent}
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductosComponent,
-    BusquedaComponent,
-    NavegacionComponent,
+    BusquedaComponent,    
     VerProductosComponent,
     HeaderComponent,
     MenuComponent,
@@ -67,7 +75,12 @@ const routes: Routes = [
     RentaAdminComponent,
     RentasUsrComponent,
     ReportesComponent,
-    EditarProdComponent
+    EditarProdComponent,
+    HistorialComponent,
+    InicioUiComponent,
+    ReestablecerContraseniaComponent,
+    PerfilComponent,
+    PerfilAdminComponent
   ],
   
   imports: [
