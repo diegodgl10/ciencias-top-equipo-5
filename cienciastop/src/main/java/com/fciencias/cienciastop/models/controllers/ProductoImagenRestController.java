@@ -34,12 +34,13 @@ public class ProductoImagenRestController {
 	IProductoImagenService svc;
 	
 	@GetMapping("/{producto_codigo}")
-	@PreAuthorize("hasRole('Administrador') || hasRole('Alumno') || hasRole('Proveedor')")
+	@PreAuthorize("hasRole('Administrador') || hasRole('Proveedor')")
 	public List<ProductoImagen> getProductoImagenes(@PathVariable("producto_codigo") String producto_codigo) {
 		return svc.getProductoImagenes(producto_codigo);
 	}
 	
 	@PostMapping 
+	@PreAuthorize("hasRole('Administrador') || hasRole('Proveedor')")
 	public ResponseEntity<?>  uploadProductoImagen(@Valid @RequestBody ProductoImagen productoImagen, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
 			Map<String,Object> response = new HashMap<>();
@@ -49,23 +50,27 @@ public class ProductoImagenRestController {
 		}
 		Map<String,Object> response = new HashMap<>();
 		// Si llegamos hasta acá es porque la edición fue valida
-		response.put("mensaje", "El producto ha sido actualizado con éxito");
 		ProductoImagen aux = svc.createProductoImage(productoImagen);
-		response.put("producto", aux);
+		if (aux == null) {
+			response.put("mensaje", "Error en el create ");
+		} else {
+			// Si llegamos hasta acá es porque la edición fue valida
+			response.put("mensaje", "El producto ha sido actualizado con éxito");
+		}
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("{/producto_imagen_id}")
-	public ResponseEntity<?> deleteProductoImage(@PathVariable("producto_imagen_id") Integer producto_imagen_id) {
+	@DeleteMapping("/{producto_imagen_id}")
+	@PreAuthorize("hasRole('Administrador') || hasRole('Proveedor')")
+	public ResponseEntity<?> deleteProductoImagen(@PathVariable("producto_imagen_id") Integer producto_imagen_id) {
 		Map<String, Object> response = new HashMap<>();
-		ProductoImagen aeliminar = svc.deleteProductoImage(producto_imagen_id);
-		if(aeliminar==null) {
+		boolean a  = svc.deleteProductoImage(producto_imagen_id);
+		if(a==false) {
 			response.put("mensaje", "No existe una imagen de producto con ese id.");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.UNAUTHORIZED);	
 		}
 		//Eliminacion exitosa del producto.
-		response.put("mensaje", "El producto ha sido eliminado con exito");
-		response.put("producto", aeliminar);
+		response.put("mensaje", "La imagen del producto ha sido eliminada con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	

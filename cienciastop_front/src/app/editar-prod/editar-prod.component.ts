@@ -18,7 +18,9 @@ export class EditarProdComponent implements OnInit {
   producto: Producto = new Producto();
   angForm: FormGroup;
   miStorage = window.localStorage;
-  
+  imagen: string;
+
+
   constructor(
     private productoService: ProductoService, 
     private router: Router, 
@@ -92,7 +94,9 @@ export class EditarProdComponent implements OnInit {
    * redireccionamos a la vista de productos
    */
   commitProd():void{
-
+    this.imagen = this.producto.imagen;
+    console.log('this.imagen');
+    console.log(this.imagen);
     this.productoService.editarProd(this.producto).subscribe(response => 
       {
         Swal.fire({
@@ -114,6 +118,10 @@ export class EditarProdComponent implements OnInit {
     reader.onload = function(){
       formulario.controls['imagen'].setValue(reader.result);
     }
+    //console.log('base64');
+    //console.log(this.imagen);
+    //console.log('result');
+    //console.log(reader.result);
     reader.onerror = function(error){
       console.log(error);
     }

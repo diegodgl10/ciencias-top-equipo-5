@@ -9,6 +9,6 @@ public interface IProductoImagenService {
 	//ApiResponse
 	public List<ProductoImagen> getProductoImagenes(String codigo);
 	public ProductoImagen createProductoImage(ProductoImagen in);
-	public ProductoImagen deleteProductoImage(Integer producto_imagen_id);
+	public boolean deleteProductoImage(Integer producto_imagen_id);
 	
 }

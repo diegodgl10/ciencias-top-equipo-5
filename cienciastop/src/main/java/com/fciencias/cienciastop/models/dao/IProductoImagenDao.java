@@ -16,5 +16,5 @@ public interface IProductoImagenDao extends CrudRepository<ProductoImagen,Intege
 	@Query(
 			value= "UPDATE producto_imagen SET status = 0 WHERE producto_imagen_id :producto_imagen_id AND status = 1 ", 
 			nativeQuery = true)
-	public Integer deleteProductoImagen(String producto_imagen_id);
+	public Integer deleteProductoImagen(Integer producto_imagen_id);
 }

@@ -68,7 +68,7 @@ export class ProductoService {
    * @param prod Producto que guardaremos
    */
   editarProd(prod:Producto): Observable<any>{
-    console.log(localStorage.getItem("noCT"));
+    console.log(prod.imagen);
     //  En este caso simulando el noCT del que esta editando este producto
     // Colocando el noCT del usuario que agrego este producto y es el que esta logeado(conectado)
     //return this.http.put<Producto>(`${this.urlEndPoint}/${prod.codigo}/editar/${localStorage.getItem("noCT")}`, {headers: this.httpHeaders}).pipe(

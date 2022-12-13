@@ -136,7 +136,7 @@
             <div class="form-group row">
                 <label for="imagen">Imagen<span class="text-danger">*</span></label>
                     <div class="custom-file">
-                        <input type="file" accept="image/*" class="custom-file-input" (change)=convertFile($event,angForm)>
+                        <input type="file" accept="image/*" class="custom-file-input" (change)=convertFile($event,angForm) >
                         <label class="custom-file-label" for="customFile">Selecciona una fotografia.</label>
                     </div>
             </div>
@@ -153,6 +153,7 @@
 
             
             <p>Form value: {{ angForm.value | json}}</p>
+            <p>Form value: {{ angForm.controls['imagen'].value }}</p>
             <p>Form status: {{ angForm.status | json}}</p>
             
         </form>
