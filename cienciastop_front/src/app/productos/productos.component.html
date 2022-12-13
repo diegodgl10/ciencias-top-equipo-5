@@ -6,30 +6,58 @@
 <div class="container">
   <div class="prod1">
     <button class="targeta" routerLink="/ver-productos/{{producto1.codigo}}">
-      <img src="/assets/images/a1s2d3f4gh6h.jpg" alt="imagenProducto-{{producto1.codigo}}" class="imagen">
-      <div class="nombre">{{producto1.nombre}}</div>
+      <img src="/assets/res/images/{{producto1.imagen}}" alt="imagenProducto-{{producto1.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto1.nombre)}}</div>
       <div class="precio">Precio: {{producto1.precio}}</div>
     </button>
   </div>
   <div class="prod2">
     <button class="targeta" routerLink="/ver-productos/{{producto2.codigo}}">
-      <img src="{{producto2.imagen}}" alt="imagenProducto-{{producto2.codigo}}" class="imagen">
-      <div class="nombre">{{producto2.nombre}}</div>
+      <img src="/assets/res/images/{{producto2.imagen}}" alt="imagenProducto-{{producto2.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto2.nombre)}}</div>
       <div class="precio">Precio: {{producto2.precio}}</div>
     </button>
   </div>
   <div class="prod3">
     <button class="targeta" routerLink="/ver-productos/{{producto3.codigo}}">
-      <img src="{{producto3.imagen}}" alt="imagenProducto-{{producto3.codigo}}" class="imagen">
-      <div class="nombre">{{producto3.nombre}}</div>
+      <img src="/assets/res/images/{{producto3.imagen}}" alt="imagenProducto-{{producto3.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto3.nombre)}}</div>
       <div class="precio">Precio: {{producto3.precio}}</div>
     </button>
   </div>
   <div class="prod4">
     <button class="targeta" routerLink="/ver-productos/{{producto4.codigo}}">
-      <img src="{{producto4.imagen}}" alt="imagenProducto-{{producto4.codigo}}" class="imagen">
-      <div class="nombre">{{producto4.nombre}}</div>
+      <img src="/assets/res/images/{{producto4.imagen}}" alt="imagenProducto-{{producto4.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto4.nombre)}}</div>
       <div class="precio">Precio: {{producto4.precio}}</div>
+    </button>
+  </div>
+  <div class="prod5">
+    <button class="targeta" routerLink="/ver-productos/{{producto5.codigo}}">
+      <img src="/assets/res/images/{{producto5.imagen}}" alt="imagenProducto-{{producto5.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto5.nombre)}}</div>
+      <div class="precio">Precio: {{producto5.precio}}</div>
+    </button>
+  </div>
+  <div class="prod6">
+    <button class="targeta" routerLink="/ver-productos/{{producto6.codigo}}">
+      <img src="/assets/res/images/{{producto6.imagen}}" alt="imagenProducto-{{producto6.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto6.nombre)}}</div>
+      <div class="precio">Precio: {{producto6.precio}}</div>
+    </button>
+  </div>
+  <div class="prod7">
+    <button class="targeta" routerLink="/ver-productos/{{producto7.codigo}}">
+      <img src="/assets/res/images/{{producto7.imagen}}" alt="imagenProducto-{{producto7.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto7.nombre)}}</div>
+      <div class="precio">Precio: {{producto7.precio}}</div>
+    </button>
+  </div>
+  <div class="prod8">
+    <button class="targeta" routerLink="/ver-productos/{{producto8.codigo}}">
+      <img src="/assets/res/images/{{producto8.imagen}}" alt="imagenProducto-{{producto8.codigo}}" class="imagen">
+      <div class="nombre">{{maxSizeName(producto8.nombre)}}</div>
+      <div class="precio">Precio: {{producto8.precio}}</div>
     </button>
   </div>
 </div>
